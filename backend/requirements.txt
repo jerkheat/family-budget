@@ -1,0 +1,15 @@
+﻿fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+pydantic
+pydantic-settings
+email-validator
+python-jose[cryptography]
+passlib
+bcrypt==4.0.1
+python-multipart
+redis
+pandas
+scikit-learn
+python-dotenv

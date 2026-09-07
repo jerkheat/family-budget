@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: family_budget
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    volumes:
+      - redisdata:/data
+
+  backend:
+    build: ./backend
+    env_file: .env
+    volumes:
+      - receipts:/data/receipts
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports: ["8000:8000"]
+
+  frontend:
+    build: ./frontend
+    ports: ["3000:80"]
+    depends_on: [backend]
+
+  nginx:
+    image: nginx:alpine
+    ports: ["80:80"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [backend, frontend]
+
+volumes:
+  pgdata:
+  redisdata:
+  receipts:

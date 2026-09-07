@@ -1,0 +1,24 @@
+﻿.env
+backend/.env
+*.env
+!.env.example
+backend/venv/
+backend/**/__pycache__/
+*.pyc
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+backend/uploads/
+backend/static/
+*.db
+*.sqlite3
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# страховка от .env.txt и подобных
+.env.*
+*.env.*
+!*.env.example
